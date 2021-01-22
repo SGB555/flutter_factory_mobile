@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
         color: Colors.white,
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 32),
+        padding: EdgeInsets.all(32),
         child: Column(
           children: [
             SizedBox(

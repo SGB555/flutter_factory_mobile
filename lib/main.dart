@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: '云供应链',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.orange[400],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: routes,
