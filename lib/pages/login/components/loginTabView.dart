@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_factory_mobile/pages/login/components/accountLoginForm.dart';
+import 'package:flutter_factory_mobile/pages/login/components/staffLoginForm.dart';
 
 class LoginTabView extends StatefulWidget {
   @override
@@ -35,10 +36,10 @@ class _LoginTabViewState extends State<LoginTabView>
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 32.0),
+      padding: EdgeInsets.only(top: 10.0),
       child: Material(
         child: Container(
-          height: 550,
+          height: 400,
           decoration: BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.cover,
@@ -56,9 +57,12 @@ class _LoginTabViewState extends State<LoginTabView>
                 indicatorWeight: 3.0,
               ),
               Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [AccountLoginForm(), Text('2')],
+                child: Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [AccountLoginForm(), StaffLoginForm()],
+                  ),
                 ),
               )
             ],
