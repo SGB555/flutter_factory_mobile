@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_factory_mobile/utils/hexColor.dart';
 
 class LoginButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const LoginButton({Key key, this.onPressed}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,7 +23,7 @@ class LoginButton extends StatelessWidget {
             onPressed: null,
           ),
           RaisedButton(
-            onPressed: () {},
+            onPressed: () => onPressed(),
             textColor: Colors.white,
             padding: EdgeInsets.all(0),
             child: Container(

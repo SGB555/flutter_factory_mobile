@@ -4,6 +4,10 @@ import 'package:flutter_factory_mobile/pages/login/components/textFieldWrapper.d
 import 'package:flutter_factory_mobile/utils/hexColor.dart';
 
 class StaffLoginForm extends StatefulWidget {
+  final GlobalKey formKey;
+
+  const StaffLoginForm({Key key, this.formKey}) : super(key: key);
+
   @override
   _StaffLoginFormState createState() => _StaffLoginFormState();
 }
@@ -24,6 +28,7 @@ class _StaffLoginFormState extends State<StaffLoginForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: widget.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

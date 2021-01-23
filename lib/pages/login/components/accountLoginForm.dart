@@ -5,6 +5,8 @@ import 'package:flutter_factory_mobile/utils/hexColor.dart';
 import 'textFieldWrapper.dart';
 
 class AccountLoginForm extends StatefulWidget {
+  final GlobalKey formKey;
+  const AccountLoginForm({Key key, this.formKey}) : super(key: key);
   @override
   _AccountLoginFormState createState() => _AccountLoginFormState();
 }
@@ -25,6 +27,7 @@ class _AccountLoginFormState extends State<AccountLoginForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: widget.formKey, //设置globalKey，用于后面获取FormState
       child: Container(
         padding: EdgeInsets.only(right: 20),
         child: Column(

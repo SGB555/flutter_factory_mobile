@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_factory_mobile/pages/login/components/accountLoginForm.dart';
 import 'package:flutter_factory_mobile/pages/login/components/staffLoginForm.dart';
 
+import 'loginButton.dart';
+
 class LoginTabView extends StatefulWidget {
   @override
   _LoginTabViewState createState() => _LoginTabViewState();
@@ -11,6 +13,12 @@ class LoginTabView extends StatefulWidget {
 class _LoginTabViewState extends State<LoginTabView>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
+
+  /// 账号登录 formKey
+  GlobalKey _accountFormKey = new GlobalKey<FormState>();
+
+  /// 工位登录 formKey
+  GlobalKey _staffFormKey = new GlobalKey<FormState>();
 
   /// tab文案数组
   List<Widget> _tabChilds = [
@@ -31,6 +39,15 @@ class _LoginTabViewState extends State<LoginTabView>
       length: _tabChilds.length,
       vsync: this,
     );
+  }
+
+  /// 登录按钮点击事件
+  void handleLogin() {
+    GlobalKey key = _tabController.index == 0 ? _accountFormKey : _staffFormKey;
+    if ((key.currentState as FormState).validate()) {
+      //验证通过提交数据
+      (key.currentState as FormState).save();
+    }
   }
 
   @override
@@ -61,9 +78,19 @@ class _LoginTabViewState extends State<LoginTabView>
                   padding: EdgeInsets.only(top: 10),
                   child: TabBarView(
                     controller: _tabController,
-                    children: [AccountLoginForm(), StaffLoginForm()],
+                    children: [
+                      AccountLoginForm(
+                        formKey: _accountFormKey,
+                      ),
+                      StaffLoginForm(
+                        formKey: _staffFormKey,
+                      )
+                    ],
                   ),
                 ),
+              ),
+              LoginButton(
+                onPressed: handleLogin,
               )
             ],
           ),

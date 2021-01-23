@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_factory_mobile/pages/login/components/loginTabView.dart';
 
-import 'components/loginButton.dart';
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -32,7 +30,6 @@ class _LoginPageState extends State<LoginPage> {
             Expanded(
               child: LoginTabView(),
             ),
-            LoginButton()
           ],
         ),
       ),
