@@ -13,12 +13,11 @@ class LoginTabView extends StatefulWidget {
 class _LoginTabViewState extends State<LoginTabView>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
+  Key testKey;
+  Map<String, String> accountFormParams = {'loginName': '', 'password': ''};
 
-  /// 账号登录 formKey
-  GlobalKey _accountFormKey = new GlobalKey<FormState>();
-
-  /// 工位登录 formKey
-  GlobalKey _staffFormKey = new GlobalKey<FormState>();
+  /// formKey
+  GlobalKey _formKey = new GlobalKey<FormState>();
 
   /// tab文案数组
   List<Widget> _tabChilds = [
@@ -43,11 +42,21 @@ class _LoginTabViewState extends State<LoginTabView>
 
   /// 登录按钮点击事件
   void handleLogin() {
-    GlobalKey key = _tabController.index == 0 ? _accountFormKey : _staffFormKey;
-    if ((key.currentState as FormState).validate()) {
+    if ((_formKey.currentState as FormState).validate()) {
       //验证通过提交数据
-      (key.currentState as FormState).save();
+      (_formKey.currentState as FormState).save();
     }
+  }
+
+  /// 接收账户登录form数据
+  void accepAccountParam(String fieldName, String val) {
+    accountFormParams[fieldName] = val;
+    print(accountFormParams);
+  }
+
+  /// 转换密码为MD5
+  String transformPwd() {
+    // return
   }
 
   @override
@@ -76,16 +85,17 @@ class _LoginTabViewState extends State<LoginTabView>
               Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(top: 10),
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                      AccountLoginForm(
-                        formKey: _accountFormKey,
-                      ),
-                      StaffLoginForm(
-                        formKey: _staffFormKey,
-                      )
-                    ],
+                  child: Form(
+                    key: _formKey,
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        AccountLoginForm(
+                          onSaved: accepAccountParam,
+                        ),
+                        StaffLoginForm()
+                      ],
+                    ),
                   ),
                 ),
               ),
