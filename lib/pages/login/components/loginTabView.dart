@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_factory_mobile/models/user.dart';
 import 'package:flutter_factory_mobile/pages/login/components/accountLoginForm.dart';
 import 'package:flutter_factory_mobile/pages/login/components/staffLoginForm.dart';
+import 'package:flutter_factory_mobile/request/login.dart';
 
 import 'loginButton.dart';
 
@@ -41,10 +43,13 @@ class _LoginTabViewState extends State<LoginTabView>
   }
 
   /// 登录按钮点击事件
-  void handleLogin() {
+  void handleLogin() async {
     if ((_formKey.currentState as FormState).validate()) {
       //验证通过提交数据
       (_formKey.currentState as FormState).save();
+      try {
+        User user = await LoginRequset().doLogin();
+      } catch (e) {}
     }
   }
 
