@@ -1,3 +1,4 @@
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 
 /// 环境枚举
@@ -15,6 +16,21 @@ Map<env, String> baseApi = {
 
 class Requset {
   Dio dio = new Dio(BaseOptions(
-    baseUrl: baseUrl[env.development],
+    baseUrl: baseUrl[env.development] + baseApi[env.development],
   ));
+
+  void init() {
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (client) {
+      // config the http client
+      client.findProxy = (uri) {
+        //proxy all request to localhost:8888
+        return "PROXY 10.2.108.63:8888";
+      };
+      // you can also create a new HttpClient to dio
+      // return new HttpClient();
+      // client.badCertificateCallback =
+      //     (X509Certificate cert, String host, int port) => true;
+    };
+  }
 }

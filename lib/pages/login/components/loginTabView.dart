@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_factory_mobile/models/user.dart';
 import 'package:flutter_factory_mobile/pages/login/components/accountLoginForm.dart';
 import 'package:flutter_factory_mobile/pages/login/components/staffLoginForm.dart';
+import 'package:flutter_factory_mobile/pages/login/models/user.dart';
 import 'package:flutter_factory_mobile/request/login.dart';
+import 'package:date_format/date_format.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 import 'loginButton.dart';
 
@@ -16,7 +20,18 @@ class _LoginTabViewState extends State<LoginTabView>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   Key testKey;
-  Map<String, String> accountFormParams = {'loginName': '', 'password': ''};
+  static String appId = 'c4805e2dcc';
+  static String appSecret = '81e691f588764310';
+  static String date =
+      formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd, '-', HH]);
+  static String sign =
+      md5.convert(utf8.encode('$appId$appSecret/$date')).toString();
+  static Map<String, String> accountFormParams = {
+    'loginName': '',
+    'password': '',
+    'appId': appId,
+    'sign': sign
+  };
 
   /// formKey
   GlobalKey _formKey = new GlobalKey<FormState>();
@@ -45,12 +60,44 @@ class _LoginTabViewState extends State<LoginTabView>
   /// 登录按钮点击事件
   void handleLogin() async {
     if ((_formKey.currentState as FormState).validate()) {
-      //验证通过提交数据
+      // 验证通过提交数据
       (_formKey.currentState as FormState).save();
-      try {
-        User user = await LoginRequset().doLogin();
-      } catch (e) {}
+      User user;
+      // 如果是账号登录tab时则是老板号登录
+      if (_tabController.index == 0) {
+        user = await this.handleBossLogin();
+      } else {
+        user = await this.handleStaffLogin();
+      }
+      if (user.code == 0) {
+      } else {
+        Fluttertoast.showToast(
+            msg: user.msg,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
     }
+  }
+
+  /// 老板号登录
+  Future<User> handleBossLogin() async {
+    print(md5.convert(utf8.encode(accountFormParams['password'])));
+    // accountFormParams['password'] =
+    //     md5.convert(utf8.encode(accountFormParams['password'])).toString();
+    User user = await LoginRequset().doLogin(accountFormParams);
+    print(user.toString());
+    return user;
+  }
+
+  /// 老板号登录
+  Future<User> handleStaffLogin() async {
+    User user = await LoginRequset().doLogin(accountFormParams);
+    print(user.toString());
+    return user;
   }
 
   /// 接收账户登录form数据
@@ -97,6 +144,7 @@ class _LoginTabViewState extends State<LoginTabView>
                       children: [
                         AccountLoginForm(
                           onSaved: accepAccountParam,
+                          onFieldSubmitted: handleLogin,
                         ),
                         StaffLoginForm()
                       ],

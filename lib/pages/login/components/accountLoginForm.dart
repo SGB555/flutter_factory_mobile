@@ -7,8 +7,10 @@ import 'textFieldWrapper.dart';
 // ignore: must_be_immutable
 class AccountLoginForm extends StatefulWidget {
   void Function(String fieldName, String val) onSaved;
+  void Function() onFieldSubmitted;
 
-  AccountLoginForm({Key key, this.onSaved}) : super(key: key);
+  AccountLoginForm({Key key, this.onSaved, this.onFieldSubmitted})
+      : super(key: key);
 
   @override
   _AccountLoginFormState createState() => _AccountLoginFormState();
@@ -39,6 +41,7 @@ class _AccountLoginFormState extends State<AccountLoginForm> {
               controller: _unameController,
               focusNode: _userNamefocusNode,
               onSaved: (val) => widget.onSaved('loginName', val),
+              onFieldSubmitted: (val) => widget.onFieldSubmitted(),
               decoration: InputDecoration(
                 hintText: "请输入手机号或老板号",
                 border: InputBorder.none,
@@ -56,6 +59,7 @@ class _AccountLoginFormState extends State<AccountLoginForm> {
               controller: _pwdController,
               focusNode: _pwdfocusNode,
               onSaved: (val) => widget.onSaved('password', val),
+              onFieldSubmitted: (val) => widget.onFieldSubmitted(),
               decoration: InputDecoration(
                 hintText: "请输入密码",
                 border: InputBorder.none,
