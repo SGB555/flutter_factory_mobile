@@ -85,11 +85,9 @@ class _LoginTabViewState extends State<LoginTabView>
 
   /// 老板号登录
   Future<User> handleBossLogin() async {
-    print(md5.convert(utf8.encode(accountFormParams['password'])));
-    // accountFormParams['password'] =
-    //     md5.convert(utf8.encode(accountFormParams['password'])).toString();
+    accountFormParams['password'] =
+        md5.convert(utf8.encode(accountFormParams['password'])).toString();
     User user = await LoginRequset().doLogin(accountFormParams);
-    print(user.toString());
     return user;
   }
 

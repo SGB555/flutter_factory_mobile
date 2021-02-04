@@ -79,11 +79,9 @@ class User {
           ? null
           : Customization.fromJson(
               json['customization'] as Map<String, dynamic>),
-      firstMenus: (json['firstMenus'] as List<FirstMenus>)?.map((e) {
-        return e == null
-            ? null
-            : FirstMenus.fromJson(e as Map<String, dynamic>);
-      })?.toList(),
+      firstMenus: (json['firstMenus'].cast<List<FirstMenus>>())?.map((e) {
+        return e == null ? null : FirstMenus.fromJson(e);
+      }),
       isChargeManage: json['isChargeManage'] as bool,
       permissionList: json['permissionList'] as List<String>,
       signId: json['signId'] as String,
@@ -201,7 +199,7 @@ class FirstMenus {
     return FirstMenus(
       name: json['name'] as String,
       secondMenuList:
-          (json['secondMenuList'] as List<SecondMenuList>)?.map((e) {
+          (json['secondMenuList'].cart<List<SecondMenuList>>())?.map((e) {
         return e == null
             ? null
             : SecondMenuList.fromJson(e as Map<String, dynamic>);
