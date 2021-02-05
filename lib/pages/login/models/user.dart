@@ -79,11 +79,13 @@ class User {
           ? null
           : Customization.fromJson(
               json['customization'] as Map<String, dynamic>),
-      firstMenus: (json['firstMenus'].cast<List<FirstMenus>>())?.map((e) {
-        return e == null ? null : FirstMenus.fromJson(e);
-      }),
+      firstMenus: ((json['firstMenus'] as List))?.map((e) {
+        return e == null
+            ? null
+            : FirstMenus.fromJson(e as Map<String, dynamic>);
+      })?.toList(),
       isChargeManage: json['isChargeManage'] as bool,
-      permissionList: json['permissionList'] as List<String>,
+      permissionList: (json['permissionList'] as List).cast<String>(),
       signId: json['signId'] as String,
       sid: json['sid'] as String,
     );
@@ -167,23 +169,6 @@ class Customization {
   }
 }
 
-class SecondMenuList {
-  String name;
-
-  SecondMenuList({this.name});
-
-  @override
-  String toString() => 'SecondMenuList(name:$name)';
-
-  factory SecondMenuList.fromJson(Map<String, dynamic> json) {
-    return SecondMenuList(name: json['name'] as String);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'name': name};
-  }
-}
-
 class FirstMenus {
   String name;
   List<SecondMenuList> secondMenuList;
@@ -198,8 +183,7 @@ class FirstMenus {
   factory FirstMenus.fromJson(Map<String, dynamic> json) {
     return FirstMenus(
       name: json['name'] as String,
-      secondMenuList:
-          (json['secondMenuList'].cart<List<SecondMenuList>>())?.map((e) {
+      secondMenuList: (json['secondMenuList'] as List)?.map((e) {
         return e == null
             ? null
             : SecondMenuList.fromJson(e as Map<String, dynamic>);
@@ -212,5 +196,22 @@ class FirstMenus {
       'name': name,
       'secondMenuList': secondMenuList?.map((e) => e?.toJson())?.toList(),
     };
+  }
+}
+
+class SecondMenuList {
+  String name;
+
+  SecondMenuList({this.name});
+
+  @override
+  String toString() => 'SecondMenuList(name:$name)';
+
+  factory SecondMenuList.fromJson(Map<String, dynamic> json) {
+    return SecondMenuList(name: json['name'] as String);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'name': name};
   }
 }

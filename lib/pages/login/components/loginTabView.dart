@@ -70,23 +70,21 @@ class _LoginTabViewState extends State<LoginTabView>
         user = await this.handleStaffLogin();
       }
       if (user.code == 0) {
-      } else {
-        Fluttertoast.showToast(
-            msg: user.msg,
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.grey,
-            textColor: Colors.white,
-            fontSize: 16.0);
-      }
+      } else {}
+      Fluttertoast.showToast(
+          msg: user.msg,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey,
+          textColor: Colors.white,
+          fontSize: 16.0);
     }
   }
 
   /// 老板号登录
   Future<User> handleBossLogin() async {
-    accountFormParams['password'] =
-        md5.convert(utf8.encode(accountFormParams['password'])).toString();
+    accountFormParams['password'] = transformPwd(accountFormParams['password']);
     User user = await LoginRequset().doLogin(accountFormParams);
     return user;
   }
@@ -105,8 +103,8 @@ class _LoginTabViewState extends State<LoginTabView>
   }
 
   /// 转换密码为MD5
-  String transformPwd() {
-    // return
+  String transformPwd(String password) {
+    return md5.convert(utf8.encode(password)).toString();
   }
 
   @override

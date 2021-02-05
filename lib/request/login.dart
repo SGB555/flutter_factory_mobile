@@ -7,7 +7,6 @@ class LoginRequset extends Requset {
   }
   Future<User> doLogin(data) async {
     var res = await super.dio.post('v1/api/login/doLogin', data: data);
-    print(res.data['firstMenus'].runtimeType.toString());
     return User.fromJson(res.data);
   }
 }
