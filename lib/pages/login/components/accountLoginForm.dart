@@ -4,10 +4,9 @@ import 'package:flutter_factory_mobile/utils/hexColor.dart';
 
 import 'textFieldWrapper.dart';
 
-// ignore: must_be_immutable
 class AccountLoginForm extends StatefulWidget {
-  void Function(String fieldName, String val) onSaved;
-  void Function() onFieldSubmitted;
+  final void Function(String fieldName, String val) onSaved;
+  final void Function() onFieldSubmitted;
 
   AccountLoginForm({Key key, this.onSaved, this.onFieldSubmitted})
       : super(key: key);

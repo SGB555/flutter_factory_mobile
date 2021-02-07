@@ -5,8 +5,16 @@ class LoginRequset extends Requset {
   LoginRequset() {
     super.init();
   }
+
+  /// 老板号登录
   Future<User> doLogin(data) async {
     var res = await super.dio.post('v1/api/login/doLogin', data: data);
+    return User.fromJson(res.data);
+  }
+
+  /// 员工号登录
+  Future<User> doWorkbayLogin(data) async {
+    var res = await super.dio.post('v1/api/login/workbayLogin', data: data);
     return User.fromJson(res.data);
   }
 }

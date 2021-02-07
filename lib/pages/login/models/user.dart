@@ -85,7 +85,7 @@ class User {
             : FirstMenus.fromJson(e as Map<String, dynamic>);
       })?.toList(),
       isChargeManage: json['isChargeManage'] as bool,
-      permissionList: (json['permissionList'] as List).cast<String>(),
+      permissionList: (json['permissionList'] as List)?.cast<String>(),
       signId: json['signId'] as String,
       sid: json['sid'] as String,
     );

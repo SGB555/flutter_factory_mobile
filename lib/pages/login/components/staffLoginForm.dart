@@ -4,6 +4,10 @@ import 'package:flutter_factory_mobile/pages/login/components/textFieldWrapper.d
 import 'package:flutter_factory_mobile/utils/hexColor.dart';
 
 class StaffLoginForm extends StatefulWidget {
+  final void Function(String fieldName, String val) onSaved;
+  final void Function() onFieldSubmitted;
+  StaffLoginForm({Key key, this.onSaved, this.onFieldSubmitted})
+      : super(key: key);
   @override
   _StaffLoginFormState createState() => _StaffLoginFormState();
 }
@@ -35,6 +39,8 @@ class _StaffLoginFormState extends State<StaffLoginForm> {
                 color: _bossNumFocusNode.hasFocus ? HexColor('ff9c38') : null,
                 child: TextFormField(
                   focusNode: _bossNumFocusNode,
+                  onSaved: (val) => widget.onSaved('bossCode', val),
+                  onFieldSubmitted: (val) => widget.onFieldSubmitted(),
                   decoration: InputDecoration(
                     hintText: "老板号",
                     border: InputBorder.none,
@@ -55,7 +61,8 @@ class _StaffLoginFormState extends State<StaffLoginForm> {
                 color: _numFocusNode.hasFocus ? HexColor('ff9c38') : null,
                 child: TextFormField(
                   focusNode: _numFocusNode,
-                  onSaved: (val) => print('staffForm'),
+                  onSaved: (val) => widget.onSaved('loginName', val),
+                  onFieldSubmitted: (val) => widget.onFieldSubmitted(),
                   decoration: InputDecoration(
                     hintText: "编号",
                     border: InputBorder.none,
@@ -69,6 +76,8 @@ class _StaffLoginFormState extends State<StaffLoginForm> {
           color: _pwdFocusNode.hasFocus ? HexColor('ff9c38') : null,
           child: TextFormField(
             focusNode: _pwdFocusNode,
+            onSaved: (val) => widget.onSaved('password', val),
+            onFieldSubmitted: (val) => widget.onFieldSubmitted(),
             decoration: InputDecoration(
               hintText: "请输入工位密码",
               border: InputBorder.none,

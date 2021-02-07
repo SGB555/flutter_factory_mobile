@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_factory_mobile/common/global.dart';
 import 'package:flutter_factory_mobile/router.dart';
 import 'package:flutter_factory_mobile/splash/index.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(PageSplash(
-    futures: [],
+    futures: [
+      Global.init(),
+    ],
     builder: (context, data) => MyApp(),
   ));
 }

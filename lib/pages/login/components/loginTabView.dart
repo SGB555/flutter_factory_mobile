@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_factory_mobile/common/global.dart';
 import 'package:flutter_factory_mobile/pages/login/components/accountLoginForm.dart';
 import 'package:flutter_factory_mobile/pages/login/components/staffLoginForm.dart';
 import 'package:flutter_factory_mobile/pages/login/models/user.dart';
@@ -19,19 +22,35 @@ class LoginTabView extends StatefulWidget {
 class _LoginTabViewState extends State<LoginTabView>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
-  Key testKey;
+
   static String appId = 'c4805e2dcc';
+
   static String appSecret = '81e691f588764310';
+
   static String date =
       formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd, '-', HH]);
+
   static String sign =
       md5.convert(utf8.encode('$appId$appSecret/$date')).toString();
+
+  /// 老板登录参数
   static Map<String, String> accountFormParams = {
     'loginName': '',
     'password': '',
     'appId': appId,
     'sign': sign
   };
+
+  /// 工位登录参数
+  static Map<String, String> staffFormParams = {
+    'loginName': '',
+    'password': '',
+    'bossCode': '',
+    'appId': appId,
+    'sign': sign
+  };
+
+  static bool loading = false;
 
   /// formKey
   GlobalKey _formKey = new GlobalKey<FormState>();
@@ -62,17 +81,20 @@ class _LoginTabViewState extends State<LoginTabView>
     if ((_formKey.currentState as FormState).validate()) {
       // 验证通过提交数据
       (_formKey.currentState as FormState).save();
-      User user;
+      User userRes;
+      loading = true;
       // 如果是账号登录tab时则是老板号登录
       if (_tabController.index == 0) {
-        user = await this.handleBossLogin();
+        userRes = await this.handleBossLogin();
       } else {
-        user = await this.handleStaffLogin();
+        userRes = await this.handleStaffLogin();
       }
-      if (user.code == 0) {
-      } else {}
+      loading = false;
+      if (userRes.code == 0) {
+        Global.saveUserInfo(userRes);
+      }
       Fluttertoast.showToast(
-          msg: user.msg,
+          msg: userRes.msg,
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
@@ -89,17 +111,22 @@ class _LoginTabViewState extends State<LoginTabView>
     return user;
   }
 
-  /// 老板号登录
+  /// 员工号登录
   Future<User> handleStaffLogin() async {
-    User user = await LoginRequset().doLogin(accountFormParams);
+    staffFormParams['password'] = transformPwd(staffFormParams['password']);
+    User user = await LoginRequset().doWorkbayLogin(staffFormParams);
     print(user.toString());
     return user;
   }
 
   /// 接收账户登录form数据
-  void accepAccountParam(String fieldName, String val) {
+  void accepAccountParams(String fieldName, String val) {
     accountFormParams[fieldName] = val;
-    print(accountFormParams);
+  }
+
+  // 接收工位登录form数据
+  void acceptStaffFormParams(String fieldName, String val) {
+    staffFormParams[fieldName] = val;
   }
 
   /// 转换密码为MD5
@@ -139,17 +166,20 @@ class _LoginTabViewState extends State<LoginTabView>
                       controller: _tabController,
                       children: [
                         AccountLoginForm(
-                          onSaved: accepAccountParam,
+                          onSaved: accepAccountParams,
                           onFieldSubmitted: handleLogin,
                         ),
-                        StaffLoginForm()
+                        StaffLoginForm(
+                          onSaved: acceptStaffFormParams,
+                          onFieldSubmitted: handleLogin,
+                        )
                       ],
                     ),
                   ),
                 ),
               ),
               LoginButton(
-                onPressed: handleLogin,
+                onPressed: !loading ? handleLogin : null,
               )
             ],
           ),
