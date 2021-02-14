@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_factory_mobile/components/bottomBar.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title = '123'}) : super(key: key);
@@ -9,13 +10,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int currentNavIndex = 3;
+
+  void onTap(int index) {
+    setState(() {
+      currentNavIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('home'),
+        title: Text('我的'),
       ),
-      body: Center(),
+      bottomNavigationBar: BottomBar(
+        currentIndex: currentNavIndex,
+        onTap: onTap,
+      ),
+      body: Container(),
     );
   }
 }

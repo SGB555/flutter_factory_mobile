@@ -22,10 +22,12 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.all(32),
         child: Column(
           children: [
-            SizedBox(
-              width: 166,
-              height: 57,
-              child: Image.asset('assets/images/Group_15@2x.png'),
+            SafeArea(
+              child: SizedBox(
+                width: 166,
+                height: 57,
+                child: Image.asset('assets/images/Group_15@2x.png'),
+              ),
             ),
             Expanded(
               child: LoginTabView(),

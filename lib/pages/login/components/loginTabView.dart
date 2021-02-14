@@ -77,7 +77,7 @@ class _LoginTabViewState extends State<LoginTabView>
   }
 
   /// 登录按钮点击事件
-  void handleLogin() async {
+  void handleLogin(BuildContext context) async {
     if ((_formKey.currentState as FormState).validate()) {
       // 验证通过提交数据
       (_formKey.currentState as FormState).save();
@@ -92,15 +92,17 @@ class _LoginTabViewState extends State<LoginTabView>
       loading = false;
       if (userRes.code == 0) {
         Global.saveUserInfo(userRes);
+        Navigator.pop(context);
       }
       Fluttertoast.showToast(
-          msg: userRes.msg,
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.grey,
-          textColor: Colors.white,
-          fontSize: 16.0);
+        msg: userRes.msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
     }
   }
 
@@ -167,11 +169,11 @@ class _LoginTabViewState extends State<LoginTabView>
                       children: [
                         AccountLoginForm(
                           onSaved: accepAccountParams,
-                          onFieldSubmitted: handleLogin,
+                          onFieldSubmitted: () => handleLogin(context),
                         ),
                         StaffLoginForm(
                           onSaved: acceptStaffFormParams,
-                          onFieldSubmitted: handleLogin,
+                          onFieldSubmitted: () => handleLogin(context),
                         )
                       ],
                     ),
@@ -179,7 +181,7 @@ class _LoginTabViewState extends State<LoginTabView>
                 ),
               ),
               LoginButton(
-                onPressed: !loading ? handleLogin : null,
+                onPressed: !loading ? () => handleLogin(context) : null,
               )
             ],
           ),

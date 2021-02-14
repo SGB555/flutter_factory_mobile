@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_factory_mobile/common/global.dart';
 import 'package:flutter_factory_mobile/router.dart';
 import 'package:flutter_factory_mobile/splash/index.dart';
+import 'package:flutter_factory_mobile/utils/hexColor.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,11 +21,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: '云供应链',
       theme: ThemeData(
-        primaryColor: Colors.orange[400],
+        primaryColor: HexColor('#262f3b'),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: routes,
-      initialRoute: '/login',
+      // initialRoute: '/login',
     );
   }
 }
