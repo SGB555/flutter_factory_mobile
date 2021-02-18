@@ -31,10 +31,13 @@ class _UserInfoBoxState extends State<UserInfoBox> {
         ),
       ),
       height: 68.0,
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 10),
+      margin: EdgeInsets.only(bottom: 10.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
+            // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Card(
                 shape: RoundedRectangleBorder(
@@ -46,26 +49,37 @@ class _UserInfoBoxState extends State<UserInfoBox> {
                   width: 48.0,
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'test-test',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.white,
+              Container(
+                padding: EdgeInsets.only(left: 5.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'test-test',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  Text(
-                    '分组：',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: HexColor('#929fb2'),
+                    Text(
+                      '分组：',
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        color: HexColor('#929fb2'),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               )
             ],
+          ),
+          IconButton(
+            icon: Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            onPressed: null,
           )
         ],
       ),

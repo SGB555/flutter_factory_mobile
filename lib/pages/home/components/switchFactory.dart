@@ -9,7 +9,7 @@ class SwitchFactory extends StatefulWidget {
 class _SwitchFactoryState extends State<SwitchFactory> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       child: Row(
         children: [
           Icon(
@@ -21,7 +21,7 @@ class _SwitchFactoryState extends State<SwitchFactory> {
               style: TextStyle(color: Colors.white),
             ),
             onPressed: null,
-          )
+          ),
         ],
       ),
     );
