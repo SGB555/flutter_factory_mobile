@@ -12,13 +12,21 @@ class UserInfoBox extends StatefulWidget {
 }
 
 class _UserInfoBoxState extends State<UserInfoBox> {
+  int role = Global.user.role;
+  String loginName = Global.user.loginName;
+
   String returnUserName() {
-    int role = Global.user.role;
-    String loginName = Global.user.loginName;
     if (role == 1) {
       return loginName;
     }
-    return '${widget.myInfo.data.bossCode}-$loginName';
+    return '${widget.myInfo.data.bossCode}-${widget.myInfo.data.loginName}';
+  }
+
+  String returnJobName() {
+    if (role == 1) {
+      return '职位：老板';
+    }
+    return '分组：';
   }
 
   @override
