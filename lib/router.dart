@@ -7,6 +7,6 @@ const pageMain = Navigator.defaultRouteName;
 
 final Map<String, WidgetBuilder> routes = {
   '/test': (context) => TestPage(),
-  pageMain: (context) => MyHomePage(),
-  '/login': (context) => LoginPage()
+  pageMain: (context) => LoginPage(),
+  '/setting': (context) => MyHomePage()
 };

@@ -28,31 +28,17 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void fetchMyInfo() async {
+  Future<MyInfo> fetchMyInfo() async {
     var data = {'userId': Global.user.userId, 'token': ''};
     var res = await SettingRequest().getMyInfo(data);
-    if (res.code == 0) {
-      setState(() {
-        myInfo = res;
-      });
-    } else {
-      Fluttertoast.showToast(
-        msg: res.msg,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.grey,
-        textColor: Colors.white,
-        fontSize: 16.0,
-      );
-    }
+    return res;
   }
 
-  @override
-  void initState() {
-    super.initState();
-    fetchMyInfo();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   fetchMyInfo();
+  // }
 
   void onCallsCellTap() async {
     const url = 'tel:4006785498';
@@ -66,37 +52,49 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('我的'),
-        actions: [SwitchFactory()],
-      ),
-      bottomNavigationBar: BottomBar(
-        currentIndex: currentNavIndex,
-        onTap: onNavTap,
-      ),
-      body: Container(
-        color: HexColor('#eeeeee'),
-        child: Column(
-          children: [
-            UserInfoBox(),
-            Cell(
-              icon: Icon(
-                Icons.phone_forwarded_outlined,
-              ),
-              isLink: true,
-              value: '400-678-5498',
-              title: '联系客服',
-              onTap: () => onCallsCellTap(),
-            ),
-            Cell(
-              icon: Icon(Icons.info_outline),
-              isLink: true,
-              value: '版本号：',
-              title: '关于',
-            )
-          ],
+        appBar: AppBar(
+          title: Text('我的'),
+          actions: [SwitchFactory()],
         ),
-      ),
-    );
+        bottomNavigationBar: BottomBar(
+          currentIndex: currentNavIndex,
+          onTap: onNavTap,
+        ),
+        body: FutureBuilder(
+          future: fetchMyInfo(),
+          builder: (BuildContext context, AsyncSnapshot<MyInfo> snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Container(
+                color: HexColor('#eeeeee'),
+                child: Column(
+                  children: [
+                    UserInfoBox(
+                      myInfo: snapshot.data,
+                    ),
+                    Cell(
+                      icon: Icon(
+                        Icons.phone_forwarded_outlined,
+                      ),
+                      isLink: true,
+                      value: '400-678-5498',
+                      title: '联系客服',
+                      onTap: () => onCallsCellTap(),
+                    ),
+                    Cell(
+                      icon: Icon(Icons.info_outline),
+                      isLink: true,
+                      value: '版本号：',
+                      title: '关于',
+                    )
+                  ],
+                ),
+              );
+            } else {
+              return Container(
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator());
+            }
+          },
+        ));
   }
 }

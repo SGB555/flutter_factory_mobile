@@ -92,7 +92,7 @@ class _LoginTabViewState extends State<LoginTabView>
       loading = false;
       if (userRes.code == 0) {
         Global.saveUserInfo(userRes);
-        Navigator.pop(context);
+        Navigator.pushReplacementNamed(context, '/setting');
       }
       Fluttertoast.showToast(
         msg: userRes.msg,

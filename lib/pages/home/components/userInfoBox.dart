@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_factory_mobile/common/global.dart';
+import 'package:flutter_factory_mobile/pages/home/models/my_info.dart';
 import 'package:flutter_factory_mobile/utils/hexColor.dart';
 
 class UserInfoBox extends StatefulWidget {
+  final MyInfo myInfo;
+
+  const UserInfoBox({Key key, this.myInfo}) : super(key: key);
   @override
   _UserInfoBoxState createState() => _UserInfoBoxState();
 }
@@ -10,11 +14,11 @@ class UserInfoBox extends StatefulWidget {
 class _UserInfoBoxState extends State<UserInfoBox> {
   String returnUserName() {
     int role = Global.user.role;
-    String bossName = Global.user.loginName;
-    // String staffName = Global.user
+    String loginName = Global.user.loginName;
     if (role == 1) {
-      return bossName;
+      return loginName;
     }
+    return '${widget.myInfo.data.bossCode}-$loginName';
   }
 
   @override
@@ -44,7 +48,9 @@ class _UserInfoBoxState extends State<UserInfoBox> {
                     borderRadius: BorderRadiusDirectional.circular(5)),
                 clipBehavior: Clip.antiAlias,
                 child: Image.network(
-                  'https://image3.myjuniu.com/513d03b1665344e9a629d96dfaae6f63_dev_132a7c175a662d1dd5b3338218109174?imageView/0/w/45/h/45',
+                  widget.myInfo.data.headImg == null
+                      ? 'https://image3.myjuniu.com/513d03b1665344e9a629d96dfaae6f63_dev_132a7c175a662d1dd5b3338218109174?imageView/0/w/45/h/45'
+                      : widget.myInfo.data.headImg,
                   height: 48.0,
                   width: 48.0,
                 ),
@@ -56,7 +62,7 @@ class _UserInfoBoxState extends State<UserInfoBox> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'test-test',
+                      returnUserName(),
                       style: TextStyle(
                         fontSize: 18.0,
                         color: Colors.white,
