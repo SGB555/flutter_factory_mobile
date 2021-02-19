@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_factory_mobile/common/global.dart';
 import 'package:flutter_factory_mobile/components/bottomBar.dart';
 import 'package:flutter_factory_mobile/components/cell.dart';
 import 'package:flutter_factory_mobile/pages/home/components/switchFactory.dart';
 import 'package:flutter_factory_mobile/pages/home/components/userInfoBox.dart';
+import 'package:flutter_factory_mobile/pages/home/models/my_info.dart';
+import 'package:flutter_factory_mobile/request/setting.dart';
 import 'package:flutter_factory_mobile/utils/hexColor.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -16,11 +20,38 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int currentNavIndex = 3;
+  var myInfo = null;
 
   void onNavTap(int index) {
     setState(() {
       currentNavIndex = index;
     });
+  }
+
+  void fetchMyInfo() async {
+    var data = {'userId': Global.user.userId, 'token': ''};
+    var res = await SettingRequest().getMyInfo(data);
+    if (res.code == 0) {
+      setState(() {
+        myInfo = res;
+      });
+    } else {
+      Fluttertoast.showToast(
+        msg: res.msg,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMyInfo();
   }
 
   void onCallsCellTap() async {
