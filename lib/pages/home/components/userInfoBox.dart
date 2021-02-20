@@ -77,7 +77,7 @@ class _UserInfoBoxState extends State<UserInfoBox> {
                       ),
                     ),
                     Text(
-                      '分组：',
+                      returnJobName(),
                       style: TextStyle(
                         fontSize: 12.0,
                         color: HexColor('#929fb2'),
