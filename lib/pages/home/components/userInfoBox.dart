@@ -93,7 +93,7 @@ class _UserInfoBoxState extends State<UserInfoBox> {
               Icons.settings,
               color: Colors.white,
             ),
-            onPressed: null,
+            onPressed: () => Navigator.pushNamed(context, '/personalInfo'),
           )
         ],
       ),
