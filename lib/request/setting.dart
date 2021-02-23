@@ -11,4 +11,16 @@ class SettingRequest extends Requset {
     var res = await super.dio.post('v1/api/facUser/getMyInfo', data: data);
     return MyInfo.fromJson(res.data);
   }
+
+  /// 上传照片
+  Future uploadImg(data) async {
+    var res = await super.dio.post('v1/api/facUser/getMyInfo', data: data);
+    return res;
+  }
+
+  /// 获取图片上传token
+  Future getUploadToken(data) async {
+    var res = await super.dio.post('v1/api/public/getUploadToken', data: data);
+    return res;
+  }
 }

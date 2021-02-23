@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_factory_mobile/utils/hexColor.dart';
 
 class SwitchFactory extends StatefulWidget {
   @override

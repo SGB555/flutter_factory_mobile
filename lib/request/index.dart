@@ -25,8 +25,8 @@ class Requset {
       // config the http client
       client.findProxy = (uri) {
         //proxy all request to localhost:8888
-        return "PROXY 192.168.31.116:8888";
-        // return "PROXY 10.2.108.63:8888";
+        // return "PROXY 192.168.31.116:8888";
+        return "PROXY 10.2.108.63:8888";
       };
       // you can also create a new HttpClient to dio
       // return new HttpClient();

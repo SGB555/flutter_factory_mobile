@@ -1,9 +1,78 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_factory_mobile/common/global.dart';
 import 'package:flutter_factory_mobile/components/cell.dart';
 import 'package:flutter_factory_mobile/utils/hexColor.dart';
+import 'package:image_picker/image_picker.dart';
 
-class PersonalInfo extends StatelessWidget {
+class PersonalInfo extends StatefulWidget {
+  @override
+  _PersonalInfoState createState() => _PersonalInfoState();
+}
+
+class _PersonalInfoState extends State<PersonalInfo> {
+  static File _image;
+  static String imgKey;
+  static String imgToken;
+  final picker = ImagePicker();
+
+  String getImgKey() {
+    String facId = Global.user.unitId;
+    String time = DateTime.now().millisecondsSinceEpoch.toString();
+    return facId +
+        '_development_' +
+        md5.convert(utf8.encode(facId + time)).toString() +
+        '.jpg';
+  }
+
+  /// 获取图片
+  /// [type]:0为拍照，1为从相册选择
+  Future getImage(num type) async {
+    final pickedFile = await picker.getImage(
+      source: type == 0 ? ImageSource.camera : ImageSource.gallery,
+    );
+
+    setState(() {
+      if (pickedFile != null) {
+        imgKey = getImgKey();
+        print(pickedFile.path.split('/').last);
+        _image = File(pickedFile.path);
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Widget bottomSheetContent(context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        FlatButton(
+          child: Text('拍照'),
+          onPressed: () async => {
+            await getImage(0),
+            Navigator.of(context).pop(),
+          },
+        ),
+        Divider(
+          height: 20.0,
+        ),
+        FlatButton(
+          child: Text('从相册选择'),
+          onPressed: () async => {
+            await getImage(1),
+            Navigator.of(context).pop(),
+          },
+        )
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +96,11 @@ class PersonalInfo extends StatelessWidget {
                   )
                 ],
               ),
+              onTap: () => showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return bottomSheetContent(context);
+                  }),
             )
           ],
         ),

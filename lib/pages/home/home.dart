@@ -7,7 +7,6 @@ import 'package:flutter_factory_mobile/pages/home/components/userInfoBox.dart';
 import 'package:flutter_factory_mobile/pages/home/models/my_info.dart';
 import 'package:flutter_factory_mobile/request/setting.dart';
 import 'package:flutter_factory_mobile/utils/hexColor.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -20,7 +19,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int currentNavIndex = 3;
-  var myInfo = null;
 
   void onNavTap(int index) {
     setState(() {
@@ -33,12 +31,6 @@ class _MyHomePageState extends State<MyHomePage> {
     var res = await SettingRequest().getMyInfo(data);
     return res;
   }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   fetchMyInfo();
-  // }
 
   void onCallsCellTap() async {
     const url = 'tel:4006785498';
