@@ -1,4 +1,5 @@
 import 'package:flutter_factory_mobile/pages/home/models/my_info.dart';
+import 'package:flutter_factory_mobile/pages/personalInfo/models/models/upload_token.dart';
 import 'package:flutter_factory_mobile/request/index.dart';
 
 class SettingRequest extends Requset {
@@ -19,8 +20,11 @@ class SettingRequest extends Requset {
   }
 
   /// 获取图片上传token
-  Future getUploadToken(data) async {
-    var res = await super.dio.post('v1/api/public/getUploadToken', data: data);
-    return res;
+  Future<UploadToken> getUploadToken(
+      Map<String, dynamic> queryParameters) async {
+    var res = await super
+        .dio
+        .get('v1/api/public/getUploadToken', queryParameters: queryParameters);
+    return UploadToken.fromJson(res.data);
   }
 }

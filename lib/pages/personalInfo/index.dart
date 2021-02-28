@@ -2,13 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:crypto/crypto.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_factory_mobile/common/global.dart';
 import 'package:flutter_factory_mobile/components/cell.dart';
 import 'package:flutter_factory_mobile/utils/hexColor.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'requests/setting.dart';
 
 class PersonalInfo extends StatefulWidget {
   @override
@@ -30,22 +31,30 @@ class _PersonalInfoState extends State<PersonalInfo> {
         '.jpg';
   }
 
+  Future<String> getToken() async {
+    var res = await SettingRequest().getUploadToken({'appId': 'c4805e2dcc'});
+    return res.uptoken;
+  }
+
   /// 获取图片
   /// [type]:0为拍照，1为从相册选择
   Future getImage(num type) async {
     final pickedFile = await picker.getImage(
       source: type == 0 ? ImageSource.camera : ImageSource.gallery,
     );
-
-    setState(() {
-      if (pickedFile != null) {
-        imgKey = getImgKey();
-        print(pickedFile.path.split('/').last);
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
+    if (pickedFile != null) {
+      String token;
+      if (imgToken == null) {
+        token = await getToken();
       }
-    });
+      setState(() {
+        imgToken = token;
+        imgKey = getImgKey();
+        _image = File(pickedFile.path);
+      });
+    } else {
+      print('No image selected.');
+    }
   }
 
   Widget bottomSheetContent(context) {
@@ -64,8 +73,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
         ),
         FlatButton(
           child: Text('从相册选择'),
-          onPressed: () async => {
-            await getImage(1),
+          onPressed: () => {
+            getImage(1),
             Navigator.of(context).pop(),
           },
         )

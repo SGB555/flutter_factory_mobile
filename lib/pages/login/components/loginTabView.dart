@@ -6,7 +6,7 @@ import 'package:flutter_factory_mobile/common/global.dart';
 import 'package:flutter_factory_mobile/pages/login/components/accountLoginForm.dart';
 import 'package:flutter_factory_mobile/pages/login/components/staffLoginForm.dart';
 import 'package:flutter_factory_mobile/pages/login/models/user.dart';
-import 'package:flutter_factory_mobile/request/login.dart';
+import 'package:flutter_factory_mobile/pages/login/requests/login.dart';
 import 'package:date_format/date_format.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';

@@ -5,7 +5,7 @@ import 'package:flutter_factory_mobile/components/cell.dart';
 import 'package:flutter_factory_mobile/pages/home/components/switchFactory.dart';
 import 'package:flutter_factory_mobile/pages/home/components/userInfoBox.dart';
 import 'package:flutter_factory_mobile/pages/home/models/my_info.dart';
-import 'package:flutter_factory_mobile/request/setting.dart';
+import 'package:flutter_factory_mobile/pages/personalInfo/requests/setting.dart';
 import 'package:flutter_factory_mobile/utils/hexColor.dart';
 import 'package:url_launcher/url_launcher.dart';
 
