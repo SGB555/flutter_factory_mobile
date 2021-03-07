@@ -5,13 +5,14 @@ import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_factory_mobile/common/address.dart';
 import 'package:flutter_factory_mobile/common/global.dart';
 import 'package:flutter_factory_mobile/components/cell.dart';
 import 'package:flutter_factory_mobile/pages/home/models/my_info.dart';
 import 'package:flutter_factory_mobile/utils/hexColor.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'models/upload_res.dart';
 import 'requests/setting.dart';
 
 class PersonalInfo extends StatefulWidget {
@@ -24,7 +25,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
   static String imgKey;
   static String imgToken;
   static MyInfo myInfo;
-  static String thumbnail;
+  static String thumbnail = Global.getGlobalMyInfo().data.headImg;
+  static String userName = Global.getGlobalMyInfo().data.userName;
   final picker = ImagePicker();
 
   @override
@@ -35,6 +37,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
     });
   }
 
+  /// 获取图片上传key
   getImgKey() {
     if (imgKey == null) {
       String facId = Global.user.unitId;
@@ -46,18 +49,16 @@ class _PersonalInfoState extends State<PersonalInfo> {
     }
   }
 
+  /// 获取图片上传token
   Future<String> getToken() async {
     var res = await SettingRequest.getUploadToken({'appId': 'c4805e2dcc'});
     return res.uptoken;
   }
 
+  /// 返回头像地址
   String returnPortraitUrl() {
-    String url = Global.getGlobalMyInfo().data.headImg;
     if (thumbnail != null) {
-      return thumbnail;
-    }
-    if (url != null) {
-      return url + '?imageView/0/w/45/h/45';
+      return thumbnail + '?imageView/0/w/45/h/45';
     }
     return Global.thumbnail;
   }
@@ -82,14 +83,38 @@ class _PersonalInfoState extends State<PersonalInfo> {
       });
       FormData formData =
           FormData.fromMap({'file': _image, 'key': key, 'token': token});
-      await SettingRequest.uploadImg(data: formData);
+      UploadRes res = await SettingRequest.uploadImg(data: formData);
+      setState(() {
+        thumbnail = 'https://image3.myjuniu.com/' + res.key;
+        handleUpdate();
+      });
     } else {
       print('No image selected.');
     }
   }
 
+  /// 退出登录事件
   handleLogOut(BuildContext context) {
     Navigator.pushReplacementNamed(context, Navigator.defaultRouteName);
+  }
+
+  /// 更新用户信息事件
+  handleUpdate() async {
+    Map params = {
+      'headImg': thumbnail,
+      'userId': Global.user.userId,
+      'userName': userName
+    };
+    await SettingRequest.updateMyInfo(params);
+    Fluttertoast.showToast(
+      msg: '操作成功',
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.grey,
+      textColor: Colors.white,
+      fontSize: 16.0,
+    );
   }
 
   // 弹出对话框
@@ -175,7 +200,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
             ),
             Cell(
               title: '姓名',
-              value: myInfo.data.userName,
+              value: userName,
               isLink: true,
             ),
             Cell(

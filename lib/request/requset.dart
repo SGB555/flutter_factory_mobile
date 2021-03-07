@@ -20,14 +20,14 @@ class HttpManager {
       _dio = new Dio(
         BaseOptions(baseUrl: Address.baseUrl, connectTimeout: 15000),
       );
-      (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-          (client) {
-        client.findProxy = (uri) {
-          //proxy all request to localhost:8888
-          return "PROXY 192.168.31.116:8888";
-          // return "PROXY 10.2.108.63:8888";
-        };
-      };
+      // (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+      //     (client) {
+      //   client.findProxy = (uri) {
+      //     //proxy all request to localhost:8888
+      //     return "PROXY 192.168.31.116:8888";
+      //     // return "PROXY 10.2.108.63:8888";
+      //   };
+      // };
       // 拦截器
       _dio.interceptors.add(new DioLogInterceptor());
       // _dio.interceptors.add(new ResponseInterceptors());
@@ -80,7 +80,7 @@ class HttpManager {
     //   return resultError(response.data);
     // }
 
-    return response;
+    return response.data;
   }
 
   ///通用的POST请求
