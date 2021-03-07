@@ -28,7 +28,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<MyInfo> fetchMyInfo() async {
     var data = {'userId': Global.user.userId, 'token': ''};
-    var res = await SettingRequest().getMyInfo(data);
+    var res = await SettingRequest.getMyInfo(data);
+    Global.saveMyInfo(res);
     return res;
   }
 

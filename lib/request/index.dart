@@ -15,13 +15,9 @@ Map<env, String> baseApi = {
 };
 
 class Requset {
-  String url;
-  Dio dio;
-  Requset(String url) {
-    this.url =
-        url != null ? url : baseUrl[env.development] + baseApi[env.development];
-    this.dio = new Dio(BaseOptions(baseUrl: this.url));
-  }
+  Dio dio = new Dio(BaseOptions(
+    baseUrl: baseUrl[env.development] + baseApi[env.development],
+  ));
 
   void init() {
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =

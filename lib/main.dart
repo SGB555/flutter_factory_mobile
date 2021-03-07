@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_factory_mobile/common/global.dart';
 import 'package:flutter_factory_mobile/router.dart';
 import 'package:flutter_factory_mobile/splash/index.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: routes,
+      builder: EasyLoading.init(),
       // initialRoute: '/login',
     );
   }

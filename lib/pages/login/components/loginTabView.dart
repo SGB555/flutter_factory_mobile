@@ -109,15 +109,14 @@ class _LoginTabViewState extends State<LoginTabView>
   /// 老板号登录
   Future<User> handleBossLogin() async {
     accountFormParams['password'] = transformPwd(accountFormParams['password']);
-    User user = await LoginRequset().doLogin(accountFormParams);
+    User user = await LoginRequset.doLogin(accountFormParams);
     return user;
   }
 
   /// 员工号登录
   Future<User> handleStaffLogin() async {
     staffFormParams['password'] = transformPwd(staffFormParams['password']);
-    User user = await LoginRequset().doWorkbayLogin(staffFormParams);
-    print(user.toString());
+    User user = await LoginRequset.doWorkbayLogin(staffFormParams);
     return user;
   }
 

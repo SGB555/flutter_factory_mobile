@@ -1,3 +1,4 @@
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_factory_mobile/common/address.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -19,6 +20,14 @@ class HttpManager {
       _dio = new Dio(
         BaseOptions(baseUrl: Address.baseUrl, connectTimeout: 15000),
       );
+      (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (client) {
+        client.findProxy = (uri) {
+          //proxy all request to localhost:8888
+          return "PROXY 192.168.31.116:8888";
+          // return "PROXY 10.2.108.63:8888";
+        };
+      };
       // 拦截器
       _dio.interceptors.add(new DioLogInterceptor());
       // _dio.interceptors.add(new ResponseInterceptors());
@@ -52,11 +61,11 @@ class HttpManager {
   }
 
   /// 通用的GET请求
-  get(api, {params, withLoading = true}) async {
+  get<T>(api, {params, withLoading = true}) async {
     if (withLoading) {
       EasyLoading.show();
     }
-    Response response;
+    Response<T> response;
 
     try {
       response = await _dio.get(api, queryParameters: params);
@@ -67,15 +76,15 @@ class HttpManager {
       return resultError(e);
     }
 
-    if (response.data is DioError) {
-      return resultError(response.data['code']);
-    }
+    // if (response.data is DioError) {
+    //   return resultError(response.data);
+    // }
 
-    return response.data;
+    return response;
   }
 
   ///通用的POST请求
-  post(api, {params, withLoading = true}) async {
+  post(api, {data, withLoading = true}) async {
     if (withLoading) {
       EasyLoading.show();
     }
@@ -83,7 +92,7 @@ class HttpManager {
     Response response;
 
     try {
-      response = await _dio.post(api, data: params);
+      response = await _dio.post(api, data: data);
       if (withLoading) {
         EasyLoading.dismiss();
       }

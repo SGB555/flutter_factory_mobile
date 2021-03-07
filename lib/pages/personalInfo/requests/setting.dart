@@ -1,30 +1,27 @@
 import 'package:flutter_factory_mobile/pages/home/models/my_info.dart';
-import 'package:flutter_factory_mobile/pages/personalInfo/models/models/upload_token.dart';
-import 'package:flutter_factory_mobile/request/index.dart';
+import 'package:flutter_factory_mobile/pages/personalInfo/models/upload_token.dart';
+import 'package:flutter_factory_mobile/request/requset.dart';
 
-class SettingRequest extends Requset {
-  SettingRequest() {
-    super.init();
-  }
-
+class SettingRequest {
   /// 获取用户信息
-  Future<MyInfo> getMyInfo(data) async {
-    var res = await super.dio.post('v1/api/facUser/getMyInfo', data: data);
-    return MyInfo.fromJson(res.data);
+  static Future<MyInfo> getMyInfo(data) async {
+    var res = await HttpManager.getInstance()
+        .post('v1/api/facUser/getMyInfo', data: data);
+    return MyInfo.fromJson(res);
   }
 
   /// 上传照片
-  Future uploadImg(data) async {
-    var res = await super.dio.post('v1/api/facUser/getMyInfo', data: data);
+  static Future uploadImg({data}) async {
+    var res =
+        await HttpManager.getInstance(baseUrl: 'https://upload-z2.qiniup.com')
+            .post('', data: data);
     return res;
   }
 
   /// 获取图片上传token
-  Future<UploadToken> getUploadToken(
-      Map<String, dynamic> queryParameters) async {
-    var res = await super
-        .dio
-        .get('v1/api/public/getUploadToken', queryParameters: queryParameters);
-    return UploadToken.fromJson(res.data);
+  static Future<UploadToken> getUploadToken(Map<String, dynamic> params) async {
+    var res = await HttpManager.getInstance()
+        .get('v1/api/public/getUploadToken', params: params);
+    return UploadToken.fromJson(res);
   }
 }
