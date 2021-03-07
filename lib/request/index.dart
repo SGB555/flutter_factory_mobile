@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 enum env { development, production }
 
 Map<env, String> baseUrl = {
-  env.development: 'http://134.175.183.187:1080/',
+  env.development: 'https://factory.myjuniu.com/',
   env.production: 'https://factory.myjuniu.com/'
 };
 
@@ -15,9 +15,13 @@ Map<env, String> baseApi = {
 };
 
 class Requset {
-  Dio dio = new Dio(BaseOptions(
-    baseUrl: baseUrl[env.development] + baseApi[env.development],
-  ));
+  String url;
+  Dio dio;
+  Requset(String url) {
+    this.url =
+        url != null ? url : baseUrl[env.development] + baseApi[env.development];
+    this.dio = new Dio(BaseOptions(baseUrl: this.url));
+  }
 
   void init() {
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
